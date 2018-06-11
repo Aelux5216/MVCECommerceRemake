@@ -15,6 +15,14 @@ namespace MVC_E_Commerce_Remake.Controllers
             return View();
         }
 
+        public IActionResult Welcome(string name, int  numTimes = 1)
+        {
+            ViewData["Message"] = "Hello " + name;
+            ViewData["NumTimes"] = numTimes;
+
+            return View();
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
