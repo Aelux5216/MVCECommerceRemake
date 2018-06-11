@@ -1,6 +1,6 @@
 using System;
 
-namespace MVC_E_Commerce_Remake.Models
+namespace MVCECommerceRemake.Models
 {
     public class ErrorViewModel
     {

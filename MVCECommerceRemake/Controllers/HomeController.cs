@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MVC_E_Commerce_Remake.Models;
+using MVCECommerceRemake.Models;
 
-namespace MVC_E_Commerce_Remake.Controllers
+namespace MVCECommerceRemake.Controllers
 {
     public class HomeController : Controller
     {

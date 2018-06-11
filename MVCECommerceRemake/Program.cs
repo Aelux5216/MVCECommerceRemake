@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace MVC_E_Commerce_Remake
+namespace MVCECommerceRemake
 {
     public class Program
     {

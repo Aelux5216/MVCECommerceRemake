@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql;
 
-namespace MVC_E_Commerce_Remake
+namespace MVCECommerceRemake
 {
     public class Startup
     {

@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "MVC_E_Commerce_Remake": {
+    "MVCECommerceRemake": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
