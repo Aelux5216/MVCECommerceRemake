@@ -5,8 +5,8 @@ namespace MVCECommerceRemake.Models
 {
     public partial class Basket
     {
-        public decimal CustomerId { get; set; }
-        public string ProductId { get; set; }
-        public double Quantity { get; set; }
+        public int CustomerId { get; set; }
+        public int ProductId { get; set; }
+        public int Quantity { get; set; }
     }
 }

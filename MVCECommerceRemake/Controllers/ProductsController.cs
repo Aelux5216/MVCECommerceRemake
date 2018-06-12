@@ -19,13 +19,35 @@ namespace MVCECommerceRemake.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string productCategory, string searchString)
         {
-            return View(await _context.Products.ToListAsync());
+            // Use LINQ to get list of genres.
+            IQueryable<string> categoryQuery = from m in _context.Products
+                                            orderby m.ProductCategory
+                                            select m.ProductCategory;
+
+            var products = from p in _context.Products
+                         select p;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(s => s.ProductName.Contains(searchString));
+            }
+
+            if (!String.IsNullOrEmpty(productCategory))
+            {
+                products = products.Where(x => x.ProductCategory == productCategory);
+            }
+
+            var productsCategoryVM = new ProductsCategoryViewModel();
+            productsCategoryVM.categories = new SelectList(await categoryQuery.Distinct().ToListAsync());
+            productsCategoryVM.products = await products.ToListAsync();
+
+            return View(productsCategoryVM);
         }
 
         // GET: Products/Details/5
-        public async Task<IActionResult> Details(uint? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -65,7 +87,7 @@ namespace MVCECommerceRemake.Controllers
         }
 
         // GET: Products/Edit/5
-        public async Task<IActionResult> Edit(uint? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -85,7 +107,7 @@ namespace MVCECommerceRemake.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(uint id, [Bind("ProductId,ProductName,ProductPrice,ProductQuantity,ProductDescription,ProductCategory")] Products products)
+        public async Task<IActionResult> Edit(string id, [Bind("ProductId,ProductName,ProductPrice,ProductQuantity,ProductDescription,ProductCategory")] Products products)
         {
             if (id != products.ProductId)
             {
@@ -116,7 +138,7 @@ namespace MVCECommerceRemake.Controllers
         }
 
         // GET: Products/Delete/5
-        public async Task<IActionResult> Delete(uint? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -136,7 +158,7 @@ namespace MVCECommerceRemake.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(uint id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var products = await _context.Products.SingleOrDefaultAsync(m => m.ProductId == id);
             _context.Products.Remove(products);
@@ -144,7 +166,7 @@ namespace MVCECommerceRemake.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductsExists(uint id)
+        private bool ProductsExists(string id)
         {
             return _context.Products.Any(e => e.ProductId == id);
         }

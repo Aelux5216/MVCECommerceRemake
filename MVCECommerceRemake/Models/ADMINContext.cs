@@ -45,13 +45,15 @@ namespace MVCECommerceRemake.Models
 
                 entity.Property(e => e.CustomerId)
                     .HasColumnName("CUSTOMER_ID")
-                    .HasColumnType("decimal(20,0)");
+                    .HasColumnType("int(4)");
 
                 entity.Property(e => e.ProductId)
                     .HasColumnName("PRODUCT_ID")
-                    .HasMaxLength(10);
+                    .HasColumnType("int(4)");
 
-                entity.Property(e => e.Quantity).HasColumnName("QUANTITY");
+                entity.Property(e => e.Quantity)
+                    .HasColumnName("QUANTITY")
+                    .HasColumnType("int(3)");
             });
 
             modelBuilder.Entity<Customers>(entity =>
@@ -64,7 +66,9 @@ namespace MVCECommerceRemake.Models
                     .HasName("CUSTOMER_ID_UNIQUE")
                     .IsUnique();
 
-                entity.Property(e => e.CustomerId).HasColumnName("CUSTOMER_ID");
+                entity.Property(e => e.CustomerId)
+                    .HasColumnName("CUSTOMER_ID")
+                    .HasColumnType("int(4)");
 
                 entity.Property(e => e.AddressLine1)
                     .IsRequired()
@@ -117,7 +121,7 @@ namespace MVCECommerceRemake.Models
 
                 entity.Property(e => e.OrderId)
                     .HasColumnName("ORDER_ID")
-                    .HasMaxLength(20);
+                    .HasColumnType("int(4)");
 
                 entity.Property(e => e.OrderDate)
                     .IsRequired()
@@ -146,11 +150,11 @@ namespace MVCECommerceRemake.Models
 
                 entity.Property(e => e.CustomerId)
                     .HasColumnName("CUSTOMER_ID")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("int(4)");
 
                 entity.Property(e => e.OrderId)
                     .HasColumnName("ORDER_ID")
-                    .HasMaxLength(20);
+                    .HasColumnType("int(4)");
             });
 
             modelBuilder.Entity<Products>(entity =>
@@ -163,7 +167,9 @@ namespace MVCECommerceRemake.Models
                     .HasName("PRODUCT_ID_UNIQUE")
                     .IsUnique();
 
-                entity.Property(e => e.ProductId).HasColumnName("PRODUCT_ID");
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("PRODUCT_ID")
+                    .HasMaxLength(10);
 
                 entity.Property(e => e.ProductCategory)
                     .HasColumnName("PRODUCT_CATEGORY")
@@ -182,9 +188,8 @@ namespace MVCECommerceRemake.Models
                     .HasColumnType("decimal(10,2)");
 
                 entity.Property(e => e.ProductQuantity)
-                    .IsRequired()
                     .HasColumnName("PRODUCT_QUANTITY")
-                    .HasMaxLength(20);
+                    .HasColumnType("int(3)");
             });
 
             modelBuilder.Entity<ProductsOrdersLink>(entity =>
@@ -203,16 +208,15 @@ namespace MVCECommerceRemake.Models
 
                 entity.Property(e => e.OrderId)
                     .HasColumnName("ORDER_ID")
-                    .HasMaxLength(20);
+                    .HasColumnType("int(4)");
 
                 entity.Property(e => e.ProductId)
                     .HasColumnName("PRODUCT_ID")
                     .HasMaxLength(10);
 
                 entity.Property(e => e.QuantityOrdered)
-                    .IsRequired()
                     .HasColumnName("QUANTITY_ORDERED")
-                    .HasMaxLength(20);
+                    .HasColumnType("int(4)");
             });
         }
     }
