@@ -21,52 +21,20 @@
     <a asp-action="Create">Create New</a>
 </p>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.products[0].ProductName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.products[0].ProductPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.products[0].ProductQuantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.products[0].ProductDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.products[0].ProductCategory)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.products)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductPrice)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductQuantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductDescription)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductCategory)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div id="divProducts">
+    @foreach (var item in Model.products)
+    {
+    <div class="col-md-2">
+        <a href='/Products/Details/@item.ProductId'><img class='img-thumbnail' src='@Url.Content("/images/ProductImages/" + @item.ProductId + ".jpg")'/></a>
+        <br/>
+        <br/>
+        @item.ProductName
+        <br/>
+        @item.ProductPrice
+        <br/>
+        <!-- placeholder for add to basket <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> | -->
+        <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> <!-- | -->
+        <!-- placeholder for remove from basket <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a> -->
+    </div>
+    }
+</div>
