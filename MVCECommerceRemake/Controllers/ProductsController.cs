@@ -41,6 +41,11 @@ namespace MVCECommerceRemake.Controllers
 
             var productsCategoryVM = new ProductsCategoryViewModel();
             productsCategoryVM.categories = new SelectList(await categoryQuery.Distinct().ToListAsync());
+            foreach (SelectListItem s in productsCategoryVM.categories)
+            {
+                s.Text = s.Text.Replace('_', ' ');
+            }
+            
             productsCategoryVM.products = await products.ToListAsync();
 
             return View(productsCategoryVM);

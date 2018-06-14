@@ -10,6 +10,6 @@ namespace MVCECommerceRemake.Models
     {
         public List<Products> products;
         public SelectList categories;
-        public string productCategory { get; set; }
+        public string productCategory { get; set; } 
     }
 }

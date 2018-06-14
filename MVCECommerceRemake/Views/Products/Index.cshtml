@@ -8,14 +8,18 @@
 
 <form asp-controller="Products" asp-action="Index" method="get">
     <p>
-        Choose a product category: <select onchange="submit()" asp-for="productCategory" asp-items="Model.categories">
+        Search by name:
+        <input type="text" name="searchString">
+        <input type="submit" value="Search" />
+        <br />
+        <br />
+        Choose a product category:
+        <select onchange="submit()" asp-for="productCategory" asp-items="Model.categories">
             <option value="">All</option>
         </select>
-
-        Search by name: <input type="text" name="searchString">
-        <input type="submit" value="Search" />
     </p>
 </form>
+<br/>
 
 <!--Create new product, not needed for customer view
 <p>
@@ -23,7 +27,7 @@
 </p>
 -->
 
-<div id="divProducts" class="container">
+<div class="container">
     @foreach (var item in Model.products)
     {
         <div class="col-sm-3 col-xs-5">
