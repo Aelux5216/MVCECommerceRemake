@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVCECommerceRemake.Models;
+using System.Text.RegularExpressions;
 
 namespace MVCECommerceRemake.Controllers
 {
@@ -36,11 +37,17 @@ namespace MVCECommerceRemake.Controllers
 
             if (!String.IsNullOrEmpty(productCategory))
             {
+                if(productCategory.Contains(" "))
+                {
+                    productCategory = productCategory.Replace(' ', '_');
+                }
+
                 products = products.Where(x => x.ProductCategory == productCategory);
             }
 
             var productsCategoryVM = new ProductsCategoryViewModel();
             productsCategoryVM.categories = new SelectList(await categoryQuery.Distinct().ToListAsync());
+            
             foreach (SelectListItem s in productsCategoryVM.categories)
             {
                 s.Text = s.Text.Replace('_', ' ');
