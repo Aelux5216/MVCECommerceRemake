@@ -30,7 +30,7 @@
 <div class="container">
     @foreach (var item in Model.products)
     {
-        <div class="col-sm-3 col-xs-5">
+        <div class="layout-products">
             <a href='/Products/Details/@item.ProductId'><img class='img-products' src='@Url.Content("/images/ProductImages/" + @item.ProductId + ".jpg")' /></a>
             <br />
             @item.ProductName

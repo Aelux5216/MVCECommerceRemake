@@ -10,5 +10,11 @@ namespace MVCECommerceRemake.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string HouseName { get; set; }
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+        public string Postcode { get; set; }
     }
 }
