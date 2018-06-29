@@ -59,7 +59,28 @@ namespace MVCECommerceRemake.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: false);
+
+                Microsoft.AspNetCore.Identity.SignInResult result = null;
+
+                if (model.Username.Contains('@'))
+                {
+                    try
+                    {
+                        ApplicationUser user = _userManager.FindByEmailAsync(model.Username).Result;
+                        result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
+                    }
+
+                    catch
+                    {
+                        result = Microsoft.AspNetCore.Identity.SignInResult.Failed;
+                    }
+                }
+
+                else
+                {
+                    result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: false);
+                }
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, "User logged in.");
@@ -76,7 +97,7 @@ namespace MVCECommerceRemake.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Invalid Username/Password.");
                     return View(model);
                 }
             }
@@ -112,10 +133,10 @@ namespace MVCECommerceRemake.Controllers
                 {
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                     // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                    await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
+                    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                     await _signInManager.SignInAsync(user, isPersistent: true);
                     _logger.LogInformation(3, "User created a new account with password.");
                     return RedirectToLocal(returnUrl);
@@ -435,6 +456,26 @@ namespace MVCECommerceRemake.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid code.");
                 return View(model);
             }
+        }
+
+        //
+        // POST: /Account/EmailExistCheck
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<JsonResult> CheckEmailExists(string email)
+        {
+            var result = await _userManager.FindByEmailAsync(email);
+            return Json(result == null);
+        }
+        
+        //
+        // POST: /Account/UsernameExistCheck
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<JsonResult> CheckUsernameExists(string userName)
+        {
+            var result = await _userManager.FindByNameAsync(userName);
+            return Json(result == null);
         }
 
         #region Helpers

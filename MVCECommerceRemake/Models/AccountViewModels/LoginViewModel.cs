@@ -15,8 +15,6 @@ namespace MVCECommerceRemake.Models.AccountViewModels
         */
 
         [Required(ErrorMessage = "{0} cannot be blank")]
-        [StringLength(15, ErrorMessage = "{0} must be between {2} and {1} characters long.", MinimumLength = 3)]
-        //Check if username exists using remote value
         [DataType(DataType.Text)]
         [Display(Name = "Username")]
         public string Username { get; set; }

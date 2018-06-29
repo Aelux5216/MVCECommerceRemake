@@ -12,13 +12,14 @@ namespace MVCECommerceRemake.Models.AccountViewModels
         [Required(ErrorMessage = "{0} cannot be blank")]
         [Display(Name = "Username")]
         [StringLength(15, ErrorMessage = "{0} must be between {2} and {1} characters long.", MinimumLength = 3)]
-        //Check if username exists using remote value
+        [Remote("CheckUsernameExists", "Account", HttpMethod = "Post", ErrorMessage = "This username is not available. Please try again.")]
         public string Username { get; set; }
 
         [Required(ErrorMessage = "{0} cannot be blank")]
         [EmailAddress(ErrorMessage = "This {0} is not a valid e-mail address.")]
         [StringLength(255, ErrorMessage = "{0} must be under {1} characters long")]
         [Display(Name = "Email")]
+        [Remote("CheckEmailExists", "Account", HttpMethod = "Post", ErrorMessage = "This email address is already is use by another account. Please try again.")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "{0} cannot be blank")]
