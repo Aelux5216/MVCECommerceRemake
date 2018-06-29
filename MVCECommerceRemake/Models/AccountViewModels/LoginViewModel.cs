@@ -16,7 +16,7 @@ namespace MVCECommerceRemake.Models.AccountViewModels
 
         [Required(ErrorMessage = "{0} cannot be blank")]
         [DataType(DataType.Text)]
-        [Display(Name = "Username")]
+        [Display(Name = "Email Address or Username")]
         public string Username { get; set; }
 
         [Required(ErrorMessage = "{0} cannot be blank")]

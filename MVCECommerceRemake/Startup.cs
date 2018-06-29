@@ -59,7 +59,6 @@ namespace MVCECommerceRemake
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }
 
