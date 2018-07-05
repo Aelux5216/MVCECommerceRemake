@@ -1,27 +1,63 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using MVCECommerceRemake.Models
+@using MySql.Data.MySqlClient
+@using Microsoft.Extensions.Configuration
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@inject IConfiguration Configuration
 
 @if (SignInManager.IsSignedIn(User))
 {
+    decimal basketCount = 0;
+    string id = @UserManager.GetUserId(User);
+
+    MySqlConnection conn = new MySqlConnection(Configuration.GetConnectionString("MySqlConnection"));
+
+    try
+    {
+        conn.Open();
+    }
+
+    catch (Exception)
+    {
+
+    }
+
+    if (conn.State == System.Data.ConnectionState.Open)
+    {
+        MySqlCommand cmd = new MySqlCommand();
+
+        cmd.CommandText = @"SELECT SUM(QUANTITY) FROM BASKET WHERE CUSTOMER_ID = @userID";
+        cmd.Parameters.Add("@userID", MySqlDbType.String).Value = id;
+        cmd.Connection = conn;
+
+        MySqlDataReader reader = cmd.ExecuteReader();
+
+        if (reader.Read())
+        {
+            basketCount = (decimal)reader[0];
+        }
+
+        conn.Close();
+        conn.Dispose();
+    }
+
     <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-            </li>
-            <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log off</button>
-            </li>
+            <li><a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a></li>
+            <li><button type="submit" class="btn btn-link navbar-btn navbar-link">Log off</button></li>
+            <li><a asp-area="" asp-controller="Baskets" asp-action="Index">@basketCount <!--Basket total + img here--></a></li>
         </ul>
     </form>
 }
 else
 {
+
+
     <ul class="nav navbar-nav navbar-right">
         <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
         <li><a asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
-        <li><a asp-area="" asp-controller="Account" asp-action="Basket">@*Basket total + img here*@</a></li>
+        <li><a asp-area="" asp-controller="Baskets" asp-action="Index">0 <!--Basket total + img here--></a></li>
     </ul>
 }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MVCECommerceRemake.Models;
 using MVCECommerceRemake.Models.AccountViewModels;
 using MVCECommerceRemake.Services;
@@ -97,7 +98,7 @@ namespace MVCECommerceRemake.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid Username/Password.");
+                    ModelState.AddModelError(string.Empty, "Invalid Username/Password or email has not been confirmed.");
                     return View(model);
                 }
             }
