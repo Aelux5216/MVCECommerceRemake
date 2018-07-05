@@ -20,36 +20,30 @@ namespace MVCECommerceRemake.Controllers
             _context = context;
             _userManager = userManager;
         }
-
+        
         // GET: Baskets
         public async Task<IActionResult> Index(BasketViewModel model)
         {
             var basketVM = new BasketViewModel();
 
-            try
-            {
+  
                 var baskets = from b in _context.Basket
                               select b;
 
-                var user = _userManager.FindByNameAsync(_userManager.GetUserName(User)).Result;
+                var user = _userManager.FindByNameAsync(ControllerContext.HttpContext.User.Identity.Name).Result;
 
-                int userId = Convert.ToInt32(_userManager.GetUserIdAsync(user));
+                string userId = _userManager.GetUserIdAsync(user).Result;
 
                 baskets = baskets.Where(s => s.CustomerId.Equals(userId));
                 
                 basketVM.baskets = await baskets.ToListAsync();
-            }
-
-            catch
-            {
-
-            }
+            
 
             return View(basketVM);
         }
 
         // GET: Baskets/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -109,7 +103,7 @@ namespace MVCECommerceRemake.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,ProductId,Quantity")] Basket basket)
+        public async Task<IActionResult> Edit(string id, [Bind("CustomerId,ProductId,Quantity")] Basket basket)
         {
             if (id != basket.CustomerId)
             {
@@ -140,7 +134,7 @@ namespace MVCECommerceRemake.Controllers
         }
 
         // GET: Baskets/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -168,7 +162,7 @@ namespace MVCECommerceRemake.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BasketExists(int id)
+        private bool BasketExists(string id)
         {
             return _context.Basket.Any(e => e.CustomerId == id);
         }
