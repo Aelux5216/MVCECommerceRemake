@@ -1,4 +1,5 @@
-﻿@model MVCECommerceRemake.Models.BasketViewModel
+﻿@using MVCECommerceRemake.Models
+@model BasketCompatabiltyModel
 
 @{
     ViewData["Title"] = "Basket";
@@ -6,31 +7,39 @@
 
 <h2>Basket</h2>
 
-
-@if (Model.baskets != null)
-{
-    foreach (var item in Model.baskets)
+<div class="container">
+    @*@try
+        {*@
+    @foreach (var item in Model.Bvm.baskets)
     {
-        <div class="container">
-            <div class="layout-products">
-                <br />
-                @item.ProductId
-                @item.Quantity
-                <br />
-                <!-- placeholder for add to basket <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> | -->
-                <!--<a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
-                placeholder for remove from basket <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a> -->
-            </div>
-        </div>
+
+        @foreach (var item2 in Model.Pvm.products)
+        {
+            if (item.ProductId == item2.ProductId)
+            {
+                <div class="layout-products">
+                    @item2.ProductName
+                    <br/>
+                    <a href='/Baskets/Details/@item.ProductId'><img class='img-products' src='@Url.Content("/images/ProductImages/" + @item.ProductId + ".jpg")' /></a>
+                    <br/>
+                    @item2.ProductPrice
+                    <br/>
+                    @string.Format("{0} ({1} available)", item.Quantity, item2.ProductQuantity)<!--Editable list box like orginal page-->
+                    <!-- placeholder for add to basket <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> | -->
+                    <!--<a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
+                    placeholder for remove from basket <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a> -->
+                </div>
+            }
+        }
+
     }
-}
+    @*}
+        catch
+        {
+            <p class="text-left">There are no items to display, please add some to the basket first or sign in if you haven't already.</p>
+        }*@
 
-else
-{
-    <div class="body-content">
-        <p class="text-center">There are no items to display, please add soem to the basket first or sign in if you haven't already.</p>
-    </div>
+</div>
 
-}
 
 

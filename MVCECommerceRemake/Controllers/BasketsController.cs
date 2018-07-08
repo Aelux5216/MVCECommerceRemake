@@ -22,22 +22,40 @@ namespace MVCECommerceRemake.Controllers
         }
         
         // GET: Baskets
-        public async Task<IActionResult> Index(BasketViewModel model)
+        public async Task<IActionResult> Index(BasketCompatabiltyModel model)
         {
-            var basketVM = new BasketViewModel();
+            var basketVM = new BasketCompatabiltyModel();
 
   
-                var baskets = from b in _context.Basket
+            var baskets = from b in _context.Basket
                               select b;
 
-                var user = _userManager.FindByNameAsync(ControllerContext.HttpContext.User.Identity.Name).Result;
+            var products = from p in _context.Products
+                               select p;
+            //try
+            //{
+                //If no user exists catch error
+                var user = await _userManager.FindByNameAsync(ControllerContext.HttpContext.User.Identity.Name);
 
-                string userId = _userManager.GetUserIdAsync(user).Result;
+                string userId = await _userManager.GetUserIdAsync(user);
 
                 baskets = baskets.Where(s => s.CustomerId.Equals(userId));
-                
-                basketVM.baskets = await baskets.ToListAsync();
-            
+
+                basketVM.Bvm.baskets = baskets.ToList();  
+
+                basketVM.Pvm.products = products.ToList();
+
+            //If user basket is empty return null model instance
+            if (basketVM.Bvm.baskets.Count() == 0)
+                {
+                    basketVM = new BasketCompatabiltyModel();
+                }
+            //}
+
+            //catch
+            //{
+
+            //}
 
             return View(basketVM);
         }

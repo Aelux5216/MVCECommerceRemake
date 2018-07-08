@@ -8,7 +8,7 @@ namespace MVCECommerceRemake.Models
 {
     public class ProductsCategoryViewModel
     {
-        public List<Products> products;
+        public List<Products> products { get; set; }
         public SelectList categories;
         public string productCategory { get; set; } 
     }

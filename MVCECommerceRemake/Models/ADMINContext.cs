@@ -204,17 +204,13 @@ namespace MVCECommerceRemake.Models
 
                 entity.ToTable("BASKET");
 
-                entity.HasIndex(e => e.ProductId)
-                    .HasName("PRODUCT_ID_UNIQUE")
-                    .IsUnique();
-
                 entity.Property(e => e.CustomerId)
                     .HasColumnName("CUSTOMER_ID")
                     .HasColumnType("varchar(255)");
 
                 entity.Property(e => e.ProductId)
                     .HasColumnName("PRODUCT_ID")
-                    .HasColumnType("int(4)");
+                    .HasColumnType("varchar(255)");
 
                 entity.Property(e => e.Quantity)
                     .HasColumnName("QUANTITY")

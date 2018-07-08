@@ -5,6 +5,6 @@ namespace MVCECommerceRemake.Models
 {
     public class BasketViewModel
     {
-        public List<Basket> baskets;
+        public List<Basket> baskets { get; set; }
     }
 }

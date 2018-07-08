@@ -36,7 +36,14 @@
 
         if (reader.Read())
         {
-            basketCount = (decimal)reader[0];
+            try
+            {
+                basketCount = (decimal)reader[0];
+            }
+            catch
+            {
+
+            }
         }
 
         conn.Close();
