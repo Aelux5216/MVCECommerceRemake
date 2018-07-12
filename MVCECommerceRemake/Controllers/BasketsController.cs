@@ -39,11 +39,12 @@ namespace MVCECommerceRemake.Controllers
 
                 string userId = await _userManager.GetUserIdAsync(user);
 
-                baskets = baskets.Where(s => s.CustomerId.Equals(userId));
+                baskets = baskets.OrderBy(d => d.ProductId).Where(s => s.CustomerId.Equals(userId));
+                products = products.OrderBy(q => q.ProductId).Where(p => baskets.Any(p2 => p2.ProductId == p.ProductId));
+           
 
-                basketVM.Bvm.baskets = baskets.ToList();  
-
-                basketVM.Pvm.products = products.ToList();
+            basketVM.Bvm.baskets = baskets.ToList();
+            basketVM.Pvm.products = products.ToList();
 
             //If user basket is empty return null model instance
             if (basketVM.Bvm.baskets.Count() == 0)

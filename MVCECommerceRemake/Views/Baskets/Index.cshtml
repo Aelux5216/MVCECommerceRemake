@@ -10,29 +10,39 @@
 <div class="container">
     @*@try
         {*@
-    @foreach (var item in Model.Bvm.baskets)
-    {
+    @{
+        List<int> quantityLimit = new List<int>(15);
 
-        @foreach (var item2 in Model.Pvm.products)
+        for (int i = 1; i < 16; i++)
         {
-            if (item.ProductId == item2.ProductId)
-            {
-                <div class="layout-products">
-                    @item2.ProductName
-                    <br/>
-                    <a href='/Baskets/Details/@item.ProductId'><img class='img-products' src='@Url.Content("/images/ProductImages/" + @item.ProductId + ".jpg")' /></a>
-                    <br/>
-                    @item2.ProductPrice
-                    <br/>
-                    @string.Format("{0} ({1} available)", item.Quantity, item2.ProductQuantity)<!--Editable list box like orginal page-->
-                    <!-- placeholder for add to basket <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> | -->
-                    <!--<a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
-                    placeholder for remove from basket <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a> -->
-                </div>
-            }
+            quantityLimit.Add(i);
         }
 
+        SelectList quantitySelect = new SelectList(quantityLimit);
+
+        int k = -1;
     }
+    
+        @foreach (var item in Model.Pvm.products)
+        {
+            k++;
+    <div class="layout-products">
+        @item.ProductName
+        <br />
+        <a href='/Baskets/Details/@item.ProductId'><img class='img-products' src='@Url.Content("/images/ProductImages/" + @item.ProductId + ".jpg")' /></a>
+        <br />
+        £@item.ProductPrice
+        <br />
+        <select asp-items="quantitySelect">
+        </select>
+        @string.Format("Quantity: {0}", Model.Bvm.baskets[k].Quantity) <!--Editable list box like orginal page-->
+        <!-- placeholder for add to basket <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> | -->
+        <!--<a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
+    placeholder for remove from basket <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a> -->
+    </div>
+
+        }
+
     @*}
         catch
         {

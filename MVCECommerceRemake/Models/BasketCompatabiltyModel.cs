@@ -12,7 +12,6 @@ namespace MVCECommerceRemake.Models
             this.Bvm = new BasketViewModel();
             this.Pvm = new ProductsCategoryViewModel();
         }
-
         public BasketViewModel Bvm { get; set; }
         public ProductsCategoryViewModel Pvm { get; set; }
     }
