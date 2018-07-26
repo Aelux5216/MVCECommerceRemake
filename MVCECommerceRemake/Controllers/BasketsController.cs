@@ -22,41 +22,32 @@ namespace MVCECommerceRemake.Controllers
         }
         
         // GET: Baskets
-        public async Task<IActionResult> Index(BasketCompatabiltyModel model)
+        public async Task<IActionResult> Index(BasketCompatabiltyModel basketVM)
         {
-            var basketVM = new BasketCompatabiltyModel();
-
-  
             var baskets = from b in _context.Basket
                               select b;
 
             var products = from p in _context.Products
                                select p;
-            //try
-            //{
-                //If no user exists catch error
-                var user = await _userManager.FindByNameAsync(ControllerContext.HttpContext.User.Identity.Name);
+ 
+           //If no user exists catch error
+           var user = await _userManager.FindByNameAsync(ControllerContext.HttpContext.User.Identity.Name);
 
-                string userId = await _userManager.GetUserIdAsync(user);
+           string userId = await _userManager.GetUserIdAsync(user);
 
-                baskets = baskets.OrderBy(d => d.ProductId).Where(s => s.CustomerId.Equals(userId));
-                products = products.OrderBy(q => q.ProductId).Where(p => baskets.Any(p2 => p2.ProductId == p.ProductId));
+           baskets = baskets.OrderBy(d => d.ProductId).Where(s => s.CustomerId.Equals(userId));
+           products = products.OrderBy(q => q.ProductId).Where(p => baskets.Any(p2 => p2.ProductId == p.ProductId));
            
+           basketVM.Bvm.baskets = baskets.ToList();
+           basketVM.Pvm.products = products.ToList();
 
-            basketVM.Bvm.baskets = baskets.ToList();
-            basketVM.Pvm.products = products.ToList();
+           //If user basket is empty return null model instance
+           if (basketVM.Bvm.baskets.Count() == 0)
+            {
+                basketVM = new BasketCompatabiltyModel();
+            }
 
-            //If user basket is empty return null model instance
-            if (basketVM.Bvm.baskets.Count() == 0)
-                {
-                    basketVM = new BasketCompatabiltyModel();
-                }
-            //}
-
-            //catch
-            //{
-
-            //}
+            await _context.SaveChangesAsync();
 
             return View(basketVM);
         }
@@ -108,7 +99,6 @@ namespace MVCECommerceRemake.Controllers
             {
                 return NotFound();
             }
-
             var basket = await _context.Basket.FindAsync(id);
             if (basket == null)
             {
@@ -122,34 +112,25 @@ namespace MVCECommerceRemake.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CustomerId,ProductId,Quantity")] Basket basket)
+        public async Task<IActionResult> Edit(string ProdID, int Quantity)
         {
-            if (id != basket.CustomerId)
+            //Code to update once current quantity and prodID can be retrieved 
+
+            var productToUpdate = _context.Basket.Where(b => b.ProductId == ProdID);
+
+            if (productToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            foreach (Basket b in productToUpdate)
             {
-                try
-                {
-                    _context.Update(basket);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BasketExists(basket.CustomerId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                b.Quantity = Quantity;
             }
-            return View(basket);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Baskets/Delete/5
