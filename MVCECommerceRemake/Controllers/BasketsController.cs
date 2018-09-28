@@ -111,21 +111,26 @@ namespace MVCECommerceRemake.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string ProdID, int Quantity)
+        [IgnoreAntiforgeryToken]
+        public async Task<ActionResult> Edit([FromBody]Products data)
         {
+            Products product = new Products { ProductId = data.ProductId, ProductQuantity = data.ProductQuantity };
+
             //Code to update once current quantity and prodID can be retrieved 
 
-            var productToUpdate = _context.Basket.Where(b => b.ProductId == ProdID);
+            var baskets = from b in _context.Basket
+                           select b;
+
+            List<Basket> productToUpdate = baskets.Where(b => b.ProductId == product.ProductId).ToList();
 
             if (productToUpdate == null)
             {
-                return NotFound();
+                //return NotFound();
             }
 
             foreach (Basket b in productToUpdate)
             {
-                b.Quantity = Quantity;
+                b.Quantity = product.ProductQuantity;
             }
 
             await _context.SaveChangesAsync();
