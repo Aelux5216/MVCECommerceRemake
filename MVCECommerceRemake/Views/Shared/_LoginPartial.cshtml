@@ -53,7 +53,7 @@
         <ul class="nav navbar-nav navbar-right">
             <li><a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a></li>
             <li><button type="submit" class="btn btn-link navbar-btn navbar-link">Log off</button></li>
-            <li><a asp-controller="Baskets" asp-action="Index">@basketCount <!--Basket total + img here--></a></li>
+            <li><a asp-controller="Baskets" asp-action="Index"><img src="~/images/Basket.png" width="15" height="15"/>(@basketCount) Basket <!--Basket total + img here--></a></li>
         </ul>
     </form>
  }

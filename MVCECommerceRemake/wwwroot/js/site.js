@@ -9,14 +9,12 @@ function selectionChanged(eProd) {
         if (xhttp.readyState === XMLHttpRequest.DONE) {
             if (xhttp.status === 200) {
 
-                $("#navbar").load("/Baskets/Index #navbar");
-
-                //location.reload(false);
+                $("#navbar").load("/Baskets/Index #navbar"); //Update basket counter, appending selector means script blocks will not execute.
             }
 
-            /*else {
+            else {
                 alert('Updating quantity failed.');
-            }*/
+            }
         }
     };
 
