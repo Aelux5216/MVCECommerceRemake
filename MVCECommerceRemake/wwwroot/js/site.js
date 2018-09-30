@@ -7,9 +7,16 @@ function selectionChanged(eProd) {
     var xhttp = new XMLHttpRequest(); //Create result function.
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState === XMLHttpRequest.DONE) {
-            if (xhttp.status !== 200) {
-                alert('There was an error changing the quantity, please try again.');
+            if (xhttp.status === 200) {
+
+                $("#navbar").load("/Baskets/Index #navbar");
+
+                //location.reload(false);
             }
+
+            /*else {
+                alert('Updating quantity failed.');
+            }*/
         }
     };
 

@@ -31,7 +31,7 @@
                     <br />
                     £@item.ProductPrice
                     <br />
-                    Quantity: 
+                    Quantity:
                     <select id="@item.ProductId" onchange="selectionChanged(this.id);">
                         @foreach (var option in quantityLimit)
                         {
@@ -57,14 +57,15 @@
                     placeholder for remove from basket <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a> -->
                 </div>
 
-                }
-                }
-
-                catch
-                {
-                <p class="text-left">There are no items to display, please add some to the basket first or sign in if you haven't already.</p>
-                }
+            }
         }
+
+        catch
+        {
+            <p class="text-left">There are no items to display, please add some to the basket first or sign in if you haven't already.</p>
+        }
+
+    }
 
 </div>
 

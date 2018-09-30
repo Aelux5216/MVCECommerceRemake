@@ -17,7 +17,7 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav id="navbar" class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -39,16 +39,16 @@
             </div>
         </div>
     </nav>
-    @if(TempData["UserMessage"] != null)
+    @if (TempData["UserMessage"] != null)
     {
-    <div class="alert alert-success fade in">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <strong>You have registered succesfully</strong> 
-        <br/>
-        Please make sure to confirm your account with the email you just recieved.
-    </div>
+        <div class="alert alert-success fade in">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>You have registered succesfully</strong>
+            <br />
+            Please make sure to confirm your account with the email you just recieved.
+        </div>
     }
-     
+
     <div class="container body-content">
         @RenderBody()
         <hr />
