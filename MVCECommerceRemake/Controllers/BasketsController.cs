@@ -171,5 +171,38 @@ namespace MVCECommerceRemake.Controllers
         {
             return _context.Basket.Any(e => e.CustomerId == id);
         }
+
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> CheckStock([FromBody]Products data) //Send back to js to finish proccessing.
+        {
+            Products product = new Products { ProductId = data.ProductId, ProductQuantity = data.ProductQuantity };
+
+            var products = from b in _context.Products
+                          select b;
+
+            bool quantityAvailable = false;
+
+            foreach (Products p in products) 
+            {
+                if (p.ProductId == product.ProductId)
+                {
+                    if (product.ProductQuantity < p.ProductQuantity)
+                    {
+                        quantityAvailable = true;
+                    }
+                }
+            }
+            
+            if (quantityAvailable == true)
+            {
+                return Json(new { success = true });
+            }
+
+            else
+            {
+                return Json(new { success = false });
+            }
+        } 
     }
 }

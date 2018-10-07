@@ -39,16 +39,6 @@
             </div>
         </div>
     </nav>
-    @if (TempData["UserMessage"] != null)
-    {
-        <div class="alert alert-success fade in">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>You have registered succesfully</strong>
-            <br />
-            Please make sure to confirm your account with the email you just recieved.
-        </div>
-    }
-
     <div class="container body-content">
         @RenderBody()
         <hr />

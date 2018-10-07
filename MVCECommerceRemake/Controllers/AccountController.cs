@@ -138,17 +138,17 @@ namespace MVCECommerceRemake.Controllers
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                     await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
                     $"Please confirm your account by clicking <a href='{callbackUrl}'>here</a>.");
-                    //await _signInManager.SignInAsync(user, isPersistent: true);
+                    // Removed as don't want automatic signing after sign up. await _signInManager.SignInAsync(user, isPersistent: true);
                     _logger.LogInformation(3, "User created a new account with password.");
 
-                    TempData["UserMessage"] = "Registered";
+                    TempData["UserMessage"] = "Please make sure to confirm your account with the email you just recieved.";
 
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
             }
 
-            // If we got this far, something failed, redisplay form
+            // If we got this far, something failed, re-display form
             return View(model);
         }
 
